@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>テンプレエンジン - テスト</title>
+</head>
+<body>
+
+    <ul id="mylist"></ul>
+
+    <script id="mytemplate" type="text/x-mytemplate">
+        <li><a href="{#url}">{#title}</a> ... {#description}</li>
+    </script>
+
+    <script>
+        // こんなデータが返って来たものとします。
+        var data = [
+          {
+            url: 'http://google.com',
+            title: 'Google',
+            description: '例の検索サイト'
+          },
+          {
+            url: 'http://www.yahoo.co.jp',
+            title: 'Yahoo! JAPAN',
+            description: 'あの検索サイト'
+          }
+        ];
+
+        for (var i = 0, l = data.length; i < l; i++) {
+            addItem(data[i]);
+        }
+
+        // ----------------
+
+        /**
+         * 与えられたデータをテンプレートに埋め込み、画面に追加する。
+         * data.hogeで与えられたものが、テンプレート中の{#hoge}に入る。
+         * @param {Object} data 全てのデータを格納したもの。
+         */
+        function addItem(data) {
+          // テンプレート取得（本当は一度だけ取得して、どこかに保存しておく方が良い。）
+          var template = document.getElementById("mytemplate").text;
+
+          // テンプレートからHTML作成
+          var html = template.replace(/{#(\w+)}/g, function(m, key) {
+            var text = data[key] || '';  // 該当なければ空文字列
+            return text;
+          });
+
+          // 画面に追加
+          var elList = document.getElementById('mylist');
+          elList.innerHTML += html;
+        }
+
+    </script>
+
+</body>
+</html>
+
+
